@@ -1,0 +1,3 @@
+- If you open any blueprint editor, you can see the menu item "SetPinFactory" in the menubar.
+- click the graph editor tab to test, then click the menu above.
+- If there is no ActiveTab as SGraphEditor, This demo works as a fail. The information about this will be displayed on the console.

@@ -107,28 +107,42 @@ void FCallNowBPEditorModule::OnFEngineLoopInitComplete()
 
 void FCallNowBPEditorModule::SetPinFactory()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Entered SetPinFactory"));
+	UE_LOG(LogTemp, Warning, TEXT("Begin of SetPinFactory Test Function"));
 	
 	const TSharedRef<FGlobalTabmanager> TabManager = FGlobalTabmanager::Get(); 
 	const TSharedPtr<SDockTab> ActiveTab = TabManager->GetActiveTab();
 	if(ActiveTab.IsValid())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("ActiveTab Found(Title : %s)"), *ActiveTab->GetTabLabel().ToString());
+		
 		const TSharedRef<SWidget> TabContent = ActiveTab->GetContent();
 		if(TabContent->GetTypeAsString() == FString(TEXT("SGraphEditor")))
 		{
 			
 			TSharedRef<SGraphEditor> GraphEditor = StaticCastSharedRef<SGraphEditor>(TabContent);
-			FString Identity = GraphEditor->GetType().ToString();
-			UE_LOG(LogTemp, Warning, TEXT("TabFound: %s"), *Identity);
+			FString Identity = GraphEditor->GetType().ToString();			 
+			UE_LOG(LogTemp, Warning, TEXT("Active SGraphEditor TabFound(Type:%s), Now trying to set the test factory."), *Identity);
+			
 			GraphEditor->SetNodeFactory(Factory.ToSharedRef());
 
 			//Update the pins that existed before setting the factory
 			UEdGraph* Graph = GraphEditor->GetCurrentGraph();
-			Graph->NotifyGraphChanged();			
+			Graph->NotifyGraphChanged();
+			
+			UE_LOG(LogTemp, Warning, TEXT("Setting factory is done. If it worked well, you can see the color of the pins and its text turned to pink. The test finished as success."));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ActiveTab was not SGraphEditor. Try again. Click carefully in order: graph tab, and menu."));
+			
 		}
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Can not find the ActiveTab. Try again. Click carefully in order: graph tab, and menu."));
+	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("End SetPinFactory"));
+	UE_LOG(LogTemp, Warning, TEXT("End of SetPinFactory Test Function"));
 }
 
 void FCallNowBPEditorModule::MakePullDownMenuBlueprintEditor(FMenuBarBuilder& menuBuilder)
